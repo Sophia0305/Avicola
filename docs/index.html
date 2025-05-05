@@ -1,89 +1,680 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Taller de Power BI</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-      color: #333;
-    }
-    header {
-      background-color: #0078d7;
-      color: white;
-      padding: 1.5rem;
-      text-align: center;
-    }
-    section {
-      padding: 2rem;
-      max-width: 1000px;
-      margin: auto;
-    }
-    h2 {
-      color: #0078d7;
-    }
-    footer {
-      background-color: #333;
-      color: white;
-      text-align: center;
-      padding: 1rem;
-      margin-top: 2rem;
-    }
-    img {
-      max-width: 100%;
-      height: auto;
-      margin: 1rem 0;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HuevoGuía - Tu asistente para comprar huevos</title>
+    <style>
+        :root {
+            --primary: #6a994e;
+            --secondary: #bc4749;
+            --light: #f2e8cf;
+            --dark: #386641;
+            --accent: #a7c957;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .filters {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .filter-item {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: var(--dark);
+        }
+        
+        .results {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .farm-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .farm-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .farm-card h3 {
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .farm-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .stat {
+            flex: 1;
+            min-width: 120px;
+            background-color: var(--light);
+            padding: 0.75rem;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .stat strong {
+            display: block;
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+        
+        .quality-indicator {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        .quality-high {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .quality-medium {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .quality-low {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: var(--secondary);
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .chart-container {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .banner {
+            background-color: var(--accent);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            color: var(--dark);
+            text-align: center;
+        }
+        
+        .farm-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .filter-group {
+                flex-direction: column;
+            }
+            
+            .farm-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Taller de Análisis Exploratorio de Datos con Power BI</h1>
-    <p>Presentación del taller académico</p>
-  </header>
+    <header>
+        <h1>HuevoGuía</h1>
+        <p>Tu asistente inteligente para comprar los mejores huevos</p>
+    </header>
+    
+    <div class="container">
+        <div class="banner">
+            <h2>Encuentra los huevos de mejor calidad cerca de ti</h2>
+            <p>Basado en datos reales de producción avícola en Colombia</p>
+        </div>
+        
+        <div class="filters">
+            <h2>Filtrar granjas</h2>
+            <div class="filter-group">
+                <div class="filter-item">
+                    <label for="region">Región</label>
+                    <select id="region">
+                        <option value="">Todas las regiones</option>
+                        <option value="Andina">Andina</option>
+                        <option value="Caribe">Caribe</option>
+                        <option value="Pacífica">Pacífica</option>
+                        <option value="Orinoquía">Orinoquía</option>
+                        <option value="Amazonía">Amazonía</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="production-type">Tipo de Producción</label>
+                    <select id="production-type">
+                        <option value="">Todos los tipos</option>
+                        <option value="Postura" selected>Postura (Huevos)</option>
+                        <option value="Engorde">Engorde (Carne)</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="quality">Calidad mínima</label>
+                    <select id="quality">
+                        <option value="">Cualquier calidad</option>
+                        <option value="high">Alta</option>
+                        <option value="medium">Media</option>
+                        <option value="low">Baja</option>
+                    </select>
+                </div>
+            </div>
+            <button id="filter-btn">Buscar granjas</button>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="farms">Lista de Granjas</div>
+            <div class="tab" data-tab="dashboard">Tablero de Análisis</div>
+            <div class="tab" data-tab="map">Mapa de Producción</div>
+        </div>
+        
+        <div id="farms-tab" class="tab-content active">
+            <div class="results">
+                <h2>Granjas con producción de huevos</h2>
+                <p>Se encontraron <span id="results-count">0</span> granjas que cumplen con tus criterios:</p>
+                
+                <div id="farm-list" class="farm-list">
+                    <!-- Aquí se cargarán dinámicamente las granjas -->
+                    <div class="loading">Cargando datos de granjas...</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="dashboard-tab" class="tab-content">
+            <div class="dashboard">
+                <div class="chart-container">
+                    <h3>Producción por Región</h3>
+                    <canvas id="region-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Tasa de Mortalidad por Región</h3>
+                    <canvas id="mortality-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Peso Promedio</h3>
+                    <canvas id="weight-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Producción Mensual</h3>
+                    <canvas id="monthly-chart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div id="map-tab" class="tab-content">
+            <div class="results">
+                <h2>Mapa de Granjas por Región</h2>
+                <div id="map-container" style="height: 500px; width: 100%; background-color: #f0f0f0; border-radius: 8px; display: flex; justify-content: center; align-items: center;">
+                    <p>Visualización del mapa de Colombia con ubicación de granjas</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <section>
-    <h2>Descripción del Dataset</h2>
-    <p>El dataset analiza la producción avícola por granja, incluyendo variables como producción, ventas, costos y mortalidad.</p>
-    <ul>
-      <li><strong>Fecha:</strong> Fecha del registro</li>
-      <li><strong>Granja:</strong> Nombre (A, B, C, D)</li>
-      <li><strong>Producción (kg)</strong></li>
-      <li><strong>Ventas (kg)</strong></li>
-      <li><strong>Costo Producción ($)</strong></li>
-      <li><strong>Mortalidad (%)</strong></li>
-    </ul>
-  </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    
+    <script>
+        // Datos del CSV (normalmente se cargarían mediante fetch)
+        const csvData = `Granja_ID;Regiуn;Tipo_Producciуn;Pollos_Totales;Peso_Promedio_kg;Tasa_Mortalidad_%;Consumo_Alimento_kg;Fecha_Producciуn
+G001;Amazonнa;Postura;16795;2,12;11,76;10114;2024-06-10
+G002;Pacнfica;Postura;1860;2,73;2,52;16323;2025-02-07
+G003;Orinoquнa;Postura;6390;2,47;0,7;37121;2024-12-31
+G004;Orinoquнa;Engorde;12964;2,67;9,28;13975;2024-12-01
+G005;Orinoquнa;Postura;12284;2,46;9,78;14023;2024-05-22
+G006;Orinoquнa;Engorde;7265;2,38;4,48;24447;2024-05-10
+G007;Orinoquнa;Engorde;17850;3,22;5,84;27933;2025-04-01
+G008;Amazonнa;Engorde;5426;3,03;7,97;26959;2024-04-22
+G009;Orinoquнa;Engorde;15423;1,25;1,05;3667;2024-07-02
+G010;Orinoquнa;Postura;12363;3,24;11,42;56620;2024-06-29
+G011;Caribe;Postura;17023;3,58;10,7;32703;2024-11-12
+G012;Andina;Postura;9322;3,12;3,5;12337;2024-08-15
+G013;Amazonнa;Postura;2685;2,39;0,68;49427;2024-11-30
+G014;Pacнfica;Postura;1769;2,16;11,23;58971;2024-10-11
+G015;Amazonнa;Engorde;3433;2,86;6,26;39487;2025-04-03
+G016;Andina;Engorde;6311;2,19;6,7;22129;2024-04-27
+G017;Caribe;Engorde;6051;2,68;8,37;43251;2024-05-14
+G018;Caribe;Engorde;7420;2,49;7,58;34921;2024-06-11
+G019;Caribe;Postura;18568;3,11;11,35;36307;2024-07-09
+G020;Pacнfica;Postura;7396;2,31;11,36;30355;2025-02-16
+G021;Andina;Engorde;9666;2,28;10,47;40732;2025-02-04
+G022;Andina;Postura;19942;2,69;7,82;7835;2025-02-17
+G023;Amazonнa;Postura;19431;3,47;9,71;23159;2024-06-11
+G024;Amazonнa;Engorde;3747;2,54;8,29;41810;2024-07-26
+G025;Andina;Engorde;1189;2,29;7,09;50605;2024-12-03
+G026;Caribe;Engorde;4005;2,93;1,98;59254;2024-10-13
+G027;Pacнfica;Engorde;2899;2,86;9,83;43080;2024-07-01
+G028;Andina;Postura;2267;2,02;9,94;41088;2024-08-03
+G029;Orinoquнa;Postura;18912;2,23;7,7;16216;2024-09-17
+G030;Amazonнa;Engorde;12394;3,05;9,93;58284;2025-01-12
+G031;Orinoquнa;Postura;4556;2,71;7,99;38547;2024-06-06
+G032;Pacнfica;Engorde;4890;1,27;2,88;34471;2024-05-01
+G033;Amazonнa;Postura;9838;2,74;3,65;20308;2024-10-18
+G034;Pacнfica;Engorde;15502;2,96;2,97;30532;2024-04-30
+G035;Amazonнa;Engorde;11627;2,08;4,84;37349;2024-12-18
+G036;Caribe;Postura;9792;2,84;0,95;59866;2025-03-11
+G037;Caribe;Postura;11555;3,44;7,61;55476;2024-12-05
+G038;Caribe;Postura;11253;2,7;4,37;48445;2025-01-04
+G039;Andina;Engorde;9433;2,19;8,04;8713;2025-02-24
+G040;Andina;Postura;11233;2,24;4,93;59178;2024-12-27
+G041;Andina;Postura;12016;2,51;8,34;52407;2024-06-25
+G042;Orinoquнa;Engorde;3612;2,69;4,42;7804;2025-02-14
+G043;Andina;Engorde;16787;2,53;3,5;53990;2024-07-05
+G044;Orinoquнa;Engorde;18159;2,75;6,2;13136;2024-12-14
+G045;Amazonнa;Postura;13206;2,43;8,47;3009;2024-10-17
+G046;Orinoquнa;Engorde;9226;2,59;4,51;22255;2024-08-10
+G047;Andina;Engorde;15541;2,98;11,27;26793;2024-04-13
+G048;Pacнfica;Postura;4152;1,97;0,95;59570;2024-09-13
+G049;Caribe;Engorde;2585;2,55;5,31;32548;2024-05-24
+G050;Andina;Engorde;4943;2,55;11,63;40892;2024-08-06`;
 
-  <section>
-    <h2>Exploración de Datos</h2>
-    <p>Se cargó el dataset en Power BI, se verificaron tipos de datos y se analizaron valores atípicos en la columna de mortalidad. Se utilizaron filtros, gráficos de dispersión, barras y tablas dinámicas para examinar relaciones entre variables.</p>
-    <img src="ruta_a_tu_imagen1.png" alt="Gráfico de dispersión Producción vs Ventas">
-    <img src="ruta_a_tu_imagen2.png" alt="Tabla dinámica de producción por granja">
-  </section>
+        // Función para parsear el CSV con PapaParse
+        function parseCSVData(csvText) {
+            const results = Papa.parse(csvText, {
+                header: true,
+                delimiter: ';',
+                dynamicTyping: true,
+                skipEmptyLines: true,
+                transformHeader: function(header) {
+                    // Corregir los caracteres codificados incorrectamente
+                    return header
+                        .replace(/н/g, 'í')
+                        .replace(/у/g, 'ó')
+                        .replace(/Regiуn/g, 'Region')
+                        .replace(/Producciуn/g, 'Produccion')
+                        .replace(/Fecha_Producciуn/g, 'Fecha_Produccion');
+                },
+                transform: function(value, header) {
+                    // Convertir comas a puntos en números decimales
+                    if (header === 'Peso_Promedio_kg' || header === 'Tasa_Mortalidad_%') {
+                        return value.toString().replace(',', '.');
+                    }
+                    return value;
+                }
+            });
+            
+            return results.data.map(row => {
+                // Asegurar que los valores numéricos sean números
+                if (row.Peso_Promedio_kg) row.Peso_Promedio_kg = parseFloat(row.Peso_Promedio_kg);
+                if (row['Tasa_Mortalidad_%']) row['Tasa_Mortalidad_%'] = parseFloat(row['Tasa_Mortalidad_%']);
+                if (row.Consumo_Alimento_kg) row.Consumo_Alimento_kg = parseInt(row.Consumo_Alimento_kg);
+                if (row.Pollos_Totales) row.Pollos_Totales = parseInt(row.Pollos_Totales);
+                
+                // Corregir nombres de regiones
+                if (row.Region) {
+                    row.Region = row.Region
+                        .replace('Amazonнa', 'Amazonía')
+                        .replace('Orinoquнa', 'Orinoquía')
+                        .replace('Pacнfica', 'Pacífica');
+                }
+                
+                return row;
+            });
+        }
 
-  <section>
-    <h2>Dashboard Interactivo</h2>
-    <p>Se diseñó un panel con gráficos de línea, barras, burbujas e indicadores clave. Incluye segmentaciones por mes, granja y rango de mortalidad.</p>
-    <p><a href="https://app.powerbi.com/links/tu_dashboard" target="_blank">Ver Dashboard en Power BI Online</a></p>
-  </section>
+        // Calcular la calificación de calidad de cada granja
+        function calculateQualityScore(farm) {
+            // Factores para huevos (granjas de postura)
+            if (farm.Produccion === 'Postura') {
+                // Para huevos, queremos baja mortalidad, buen peso promedio y consumo eficiente de alimento
+                const mortalityScore = 10 - Math.min(farm['Tasa_Mortalidad_%'], 10); // 0-10
+                const weightScore = Math.min(farm.Peso_Promedio_kg * 3, 10); // 0-10
+                
+                // Calculamos la eficiencia de consumo (alimento por pollo)
+                const foodEfficiency = farm.Consumo_Alimento_kg / farm.Pollos_Totales;
+                // Puntuación inversa: menos consumo es mejor (dentro de un rango razonable)
+                const foodScore = Math.max(10 - (foodEfficiency / 3), 1);
+                
+                // Combinar puntuaciones (damos más peso a mortalidad y peso)
+                const totalScore = (mortalityScore * 0.4) + (weightScore * 0.4) + (foodScore * 0.2);
+                
+                // Devolver la calidad en categorías
+                if (totalScore >= 7) return 'high';
+                if (totalScore >= 5) return 'medium';
+                return 'low';
+            } else {
+                // Para granjas de engorde
+                return 'medium'; // Por defecto
+            }
+        }
 
-  <section>
-    <h2>Conclusiones</h2>
-    <ul>
-      <li>Granja B tuvo mayor producción promedio.</li>
-      <li>Existe correlación directa entre producción y ventas.</li>
-      <li>Granja D presentó mayor costo de producción.</li>
-    </ul>
-    <p>El taller permitió aplicar técnicas de análisis exploratorio y visualizar datos de manera interactiva con Power BI.</p>
-  </section>
+        // Cargar los datos y mostrar granjas
+        document.addEventListener('DOMContentLoaded', function() {
+            const farms = parseCSVData(csvData);
+            
+            // Inicializar la visualización
+            renderFarms(farms);
+            initCharts(farms);
+            initTabs();
+            
+            // Configurar evento del botón de filtro
+            document.getElementById('filter-btn').addEventListener('click', function() {
+                filterFarms(farms);
+            });
+        });
 
-  <footer>
-    <p>Desarrollado por [Tu Nombre] · Taller Power BI · 2025</p>
-  </footer>
-</body>
-</html>
+        // Renderizar la lista de granjas
+        function renderFarms(farms) {
+            const farmListElement = document.getElementById('farm-list');
+            const postureFarms = farms.filter(farm => farm.Produccion === 'Postura');
+            
+            if (postureFarms.length === 0) {
+                farmListElement.innerHTML = '<div class="no-results">No se encontraron granjas de postura.</div>';
+                document.getElementById('results-count').textContent = '0';
+                return;
+            }
+            
+            document.getElementById('results-count').textContent = postureFarms.length;
+            
+            let html = '';
+            postureFarms.forEach(farm => {
+                const qualityScore = calculateQualityScore(farm);
+                let qualityClass = '';
+                let qualityText = '';
+                
+                if (qualityScore === 'high') {
+                    qualityClass = 'quality-high';
+                    qualityText = 'Alta';
+                } else if (qualityScore === 'medium') {
+                    qualityClass = 'quality-medium';
+                    qualityText = 'Media';
+                } else {
+                    qualityClass = 'quality-low';
+                    qualityText = 'Baja';
+                }
+                
+                html += `
+                <div class="farm-card" data-quality="${qualityScore}" data-region="${farm.Region}">
+                    <h3>${farm.Granja_ID} <span class="quality-indicator ${qualityClass}">${qualityText}</span></h3>
+                    <p>Región: ${farm.Region}</p>
+                    <p>Fecha de producción: ${farm.Fecha_Produccion}</p>
+                    
+                    <div class="farm-stats">
+                        <div class="stat">
+                            <strong>${farm.Pollos_Totales}</strong>
+                            <span>Aves</span>
+                        </div>
+                        <div class="stat">
+                            <strong>${farm.Peso_Promedio_kg} kg</strong>
+                            <span>Peso promedio</span>
+                        </div>
+                        <div class="stat">
+                            <strong>${farm['Tasa_Mortalidad_%']}%</strong>
+                            <span>Mortalidad</span>
+                        </div>
+                    </div>
+                </div>`;
+            });
+            
+            farmListElement.innerHTML = html;
+        }
+
+        // Filtrar granjas según criterios
+        function filterFarms(farms) {
+            const regionFilter = document.getElementById('region').value;
+            const typeFilter = document.getElementById('production-type').value;
+            const qualityFilter = document.getElementById('quality').value;
+            
+            let filteredFarms = farms;
+            
+            // Aplicar filtros
+            if (regionFilter) {
+                filteredFarms = filteredFarms.filter(farm => farm.Region === regionFilter);
+            }
+            
+            if (typeFilter) {
+                filteredFarms = filteredFarms.filter(farm => farm.Produccion === typeFilter);
+            }
+            
+            // Renderizar resultados
+            renderFarms(filteredFarms);
+            
+            // Si hay filtro de calidad, filtramos después de renderizar
+            if (qualityFilter) {
+                const farmCards = document.querySelectorAll('.farm-card');
+                farmCards.forEach(card => {
+                    if (card.dataset.quality !== qualityFilter) {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Actualizar contador
+                const visibleCards = document.querySelectorAll('.farm-card[style="display: none;"]');
+                document.getElementById('results-count').textContent = farmCards.length - visibleCards.length;
+            }
+        }
+
+        // Inicializar gráficos
+        function initCharts(farms) {
+            // Ejemplo básico para un gráfico
+            const postureFarms = farms.filter(farm => farm.Produccion === 'Postura');
+            
+            // Agrupar por región
+            const regionData = {};
+            postureFarms.forEach(farm => {
+                if (!regionData[farm.Region]) {
+                    regionData[farm.Region] = {
+                        count: 0,
+                        totalChickens: 0,
+                        mortality: 0
+                    };
+                }
+                regionData[farm.Region].count++;
+                regionData[farm.Region].totalChickens += farm.Pollos_Totales;
+                regionData[farm.Region].mortality += farm['Tasa_Mortalidad_%'];
+            });
+            
+            // Preparar datos para gráficos
+            const regions = Object.keys(regionData);
+            const chickensData = regions.map(region => regionData[region].totalChickens);
+            const mortalityData = regions.map(region => regionData[region].mortality / regionData[region].count);
+            
+            // Gráfico por región
+            const regionCtx = document.getElementById('region-chart').getContext('2d');
+            new Chart(regionCtx, {
+                type: 'bar',
+                data: {
+                    labels: regions,
+                    datasets: [{
+                        label: 'Total de Aves de Postura',
+                        data: chickensData,
+                        backgroundColor: 'rgba(106, 153, 78, 0.7)',
+                        borderColor: 'rgba(56, 102, 65, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Gráfico de mortalidad
+            const mortalityCtx = document.getElementById('mortality-chart').getContext('2d');
+            new Chart(mortalityCtx, {
+                type: 'bar',
+                data: {
+                    labels: regions,
+                    datasets: [{
+                        label: 'Tasa de Mortalidad Promedio (%)',
+                        data: mortalityData,
+                        backgroundColor: 'rgba(188, 71, 73, 0.7)',
+                        borderColor: 'rgba(188, 71, 73, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 12
+                        }
+                    }
+                }
+            });
+            
+            // Gráfico de peso promedio
+            const weightData = {};
+            regions.forEach(region => {
+                weightData[region] = 0;
+                let count = 0;
+                postureFarms.filter(farm => farm.Region === region).forEach(farm => {
+                    weightData[region] += farm.Peso_Promedio_kg;
+                    count++;
+                });
+                if (count > 0) weightData[region] /= count;
+            });
+            
+            const weightCtx = document.getElementById('weight-chart').getContext('2d');
+            new Chart(weightCtx, {
+                type: 'bar',
+                data: {
+                    labels: regions,
+                    datasets: [{
+                        label: 'Peso Promedio (kg)',
+                        data: regions.map(region => weightData[region]),
+                        backgroundColor: 'rgba(167, 201, 87, 0.7)',
+                        borderColor: 'rgba(167, 201, 87, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
