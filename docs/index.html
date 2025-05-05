@@ -3,48 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pilli - Tu asistente para comprar huevos</title>
+    <title>Pilli - Tu Guía Inteligente para Comprar Huevos</title>
     <style>
         :root {
-            --primary: #6a994e;
-            --secondary: #bc4749;
-            --light: #f2e8cf;
-            --dark: #386641;
-            --accent: #a7c957;
+            --primary: #FF8A00;
+            --secondary: #FFC43D;
+            --accent: #1E88E5;
+            --dark: #333333;
+            --light: #FFFFFF;
+            --bg-light: #F8F9FA;
+            --text-dark: #212121;
+            --text-muted: #6C757D;
+            --border: #DEE2E6;
+            --success: #28A745;
+            --warning: #FFC107;
+            --danger: #DC3545;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
         }
         
         body {
-            background-color: #f9f9f9;
-            color: #333;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
         }
         
         header {
-            background-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .logo img {
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            padding: 5px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.2s;
+            padding: 0.5rem 0.8rem;
+            border-radius: 4px;
+        }
+        
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        nav a.active {
+            background-color: rgba(255, 255, 255, 0.3);
         }
         
         .container {
             max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
+            margin: 2rem auto;
+            padding: 0 1rem;
         }
         
-        .filters {
+        .hero {
             background-color: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
             margin-bottom: 2rem;
+            text-align: center;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff8a00' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .search-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+        
+        .search-container h2 {
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .search-container h2 svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--primary);
         }
         
         .filter-group {
@@ -63,180 +158,560 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 500;
-            color: var(--dark);
+            color: var(--text-dark);
         }
         
         select, input {
             width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
             font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background-color: var(--bg-light);
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 138, 0, 0.25);
         }
         
         button {
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 4px;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
             font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background 0.3s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
         
         button:hover {
-            background-color: var(--dark);
-        }
-        
-        .results {
-            background-color: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-        
-        .farm-card {
-            border: 1px solid #eee;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        
-        .farm-card:hover {
+            background-color: #FF7600;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         
-        .farm-card h3 {
-            color: var(--dark);
-            margin-bottom: 0.5rem;
+        button:active {
+            transform: translateY(0);
         }
         
-        .farm-stats {
+        .btn-group {
             display: flex;
-            flex-wrap: wrap;
+            justify-content: flex-end;
             gap: 1rem;
-            margin-top: 1rem;
         }
         
-        .stat {
-            flex: 1;
-            min-width: 120px;
-            background-color: var(--light);
-            padding: 0.75rem;
-            border-radius: 4px;
-            text-align: center;
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
         }
         
-        .stat strong {
-            display: block;
-            font-size: 1.2rem;
-            color: var(--dark);
-        }
-        
-        .quality-indicator {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 999px;
-            font-weight: 600;
-            margin-left: 0.5rem;
-        }
-        
-        .quality-high {
-            background-color: #d4edda;
-            color: #155724;
-        }
-        
-        .quality-medium {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-        
-        .quality-low {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            font-size: 1.2rem;
-            color: var(--dark);
-        }
-        
-        .no-results {
-            text-align: center;
-            padding: 2rem;
-            color: var(--secondary);
-        }
-        
-        .dashboard {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .chart-container {
-            background-color: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-        
-        .banner {
-            background-color: var(--accent);
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            color: var(--dark);
-            text-align: center;
-        }
-        
-        .farm-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 1.5rem;
+        .btn-outline:hover {
+            background-color: rgba(255, 138, 0, 0.1);
         }
         
         .tabs {
             display: flex;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid #ddd;
+            background-color: white;
+            border-radius: 12px 12px 0 0;
+            overflow: hidden;
+            margin-bottom: 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
         }
         
         .tab {
-            padding: 0.75rem 1.5rem;
+            padding: 1.2rem 1.5rem;
             cursor: pointer;
-            border-bottom: 3px solid transparent;
+            flex: 1;
+            text-align: center;
+            background-color: var(--bg-light);
+            color: var(--text-muted);
+            font-weight: 600;
+            transition: all 0.3s;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .tab:hover {
+            background-color: rgba(255, 138, 0, 0.05);
+            color: var(--text-dark);
         }
         
         .tab.active {
-            border-bottom: 3px solid var(--primary);
+            background-color: white;
             color: var(--primary);
-            font-weight: 600;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .tab svg {
+            width: 20px;
+            height: 20px;
         }
         
         .tab-content {
             display: none;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
         }
         
         .tab-content.active {
             display: block;
         }
         
+        .farms-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .sort-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .view-toggle {
+            display: flex;
+            background-color: var(--bg-light);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .view-toggle button {
+            background-color: transparent;
+            color: var(--text-muted);
+            padding: 0.5rem;
+            border-radius: 0;
+        }
+        
+        .view-toggle button.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .view-toggle button:hover:not(.active) {
+            background-color: #EAEAEA;
+            transform: none;
+        }
+        
+        .farm-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .farm-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .farm-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #EAEAEA;
+        }
+        
+        .farm-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .farm-card-header {
+            padding: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid #EAEAEA;
+        }
+        
+        .farm-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .farm-meta {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+        
+        .quality-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .quality-high {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+        }
+        
+        .quality-medium {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: var(--warning);
+        }
+        
+        .quality-low {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger);
+        }
+        
+        .farm-card-body {
+            padding: 1.2rem;
+        }
+        
+        .farm-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+        }
+        
+        .farm-stat {
+            text-align: center;
+            padding: 0.8rem;
+            background-color: var(--bg-light);
+            border-radius: 8px;
+        }
+        
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.2rem;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        .farm-card-footer {
+            padding: 1.2rem;
+            background-color: var(--bg-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .farm-region {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+        
+        .farm-region svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--primary);
+        }
+        
+        .farm-date {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            gap: 2rem;
+        }
+        
+        .chart-container {
+            background-color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .chart-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .chart-body {
+            height: 300px;
+            position: relative;
+        }
+        
+        canvas {
+            max-width: 100%;
+        }
+        
+        .map-container {
+            height: 600px;
+            background-color: #E9ECEF;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .map-overlay {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background-color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            max-width: 300px;
+        }
+        
+        .region-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .region-stat {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            text-align: center;
+        }
+        
+        .region-icon {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 0.5rem;
+            background-color: rgba(255, 138, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .region-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--primary);
+        }
+        
+        .region-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.2rem;
+        }
+        
+        .region-name {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+        
+        .no-data svg {
+            width: 64px;
+            height: 64px;
+            fill: #CCCCCC;
+            margin-bottom: 1rem;
+        }
+        
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 138, 0, 0.1);
+            border-radius: 50%;
+            border-left-color: var(--primary);
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            gap: 0.5rem;
+        }
+        
+        .pagination button {
+            background-color: white;
+            color: var(--text-dark);
+            border: 1px solid var(--border);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            padding: 0;
+        }
+        
+        .pagination button.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .pagination button:hover:not(.active) {
+            background-color: var(--bg-light);
+            transform: none;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .footer-logo img {
+            height: 30px;
+            border-radius: 50%;
+            background-color: white;
+            padding: 5px;
+        }
+        
+        .footer-links h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Responsive */
         @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                gap: 0.5rem;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .farm-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .region-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
             .filter-group {
                 flex-direction: column;
             }
             
-            .farm-list {
-                grid-template-columns: 1fr;
+            .farm-card-header {
+                flex-direction: column;
+                gap: 0.5rem;
             }
             
-            .dashboard {
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .farm-stats {
                 grid-template-columns: 1fr;
             }
         }
@@ -244,18 +719,43 @@
 </head>
 <body>
     <header>
-        <h1>HuevoGuía</h1>
-        <p>Tu asistente inteligente para comprar los mejores huevos</p>
+        <div class="header-content">
+            <a href="#" class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"></path>
+                </svg>
+                Pilli
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Inicio</a></li>
+                    <li><a href="#about">Sobre Nosotros</a></li>
+                    <li><a href="#contact">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
     
     <div class="container">
-        <div class="banner">
-            <h2>Encuentra los huevos de mejor calidad cerca de ti</h2>
-            <p>Basado en datos reales de producción avícola en Colombia</p>
+        <div class="hero">
+            <h1>Encuentra los mejores huevos para ti</h1>
+            <p>Pilli te ayuda a encontrar la mejor opción de huevos basada en datos reales de producción avícola. Compara granjas, analiza calidad y toma decisiones informadas.</p>
+            <button id="start-search">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                Comenzar búsqueda
+            </button>
         </div>
         
-        <div class="filters">
-            <h2>Filtrar granjas</h2>
+        <div class="search-container">
+            <h2>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+                Filtrar Granjas
+            </h2>
             <div class="filter-group">
                 <div class="filter-item">
                     <label for="region">Región</label>
@@ -277,404 +777,48 @@
                     </select>
                 </div>
                 <div class="filter-item">
-                    <label for="quality">Calidad mínima</label>
-                    <select id="quality">
-                        <option value="">Cualquier calidad</option>
-                        <option value="high">Alta</option>
-                        <option value="medium">Media</option>
-                        <option value="low">Baja</option>
-                    </select>
+                    <label for="min-weight">Peso Mínimo (kg)</label>
+                    <input type="number" id="min-weight" min="0" step="0.1" placeholder="Ej: 2.5">
+                </div>
+                <div class="filter-item">
+                    <label for="max-mortality">Tasa de Mortalidad Máxima (%)</label>
+                    <input type="number" id="max-mortality" min="0" max="100" step="0.1" placeholder="Ej: 5">
                 </div>
             </div>
-            <button id="filter-btn">Buscar granjas</button>
+            <div class="btn-group">
+                <button id="reset-filters" class="btn-outline">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+                        <path d="M21 3v5h-5"></path>
+                        <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+                        <path d="M3 21v-5h5"></path>
+                    </svg>
+                    Reiniciar
+                </button>
+                <button id="apply-filters">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    Aplicar Filtros
+                </button>
+            </div>
         </div>
         
         <div class="tabs">
-            <div class="tab active" data-tab="farms">Lista de Granjas</div>
-            <div class="tab" data-tab="dashboard">Tablero de Análisis</div>
-            <div class="tab" data-tab="map">Mapa de Producción</div>
-        </div>
-        
-        <div id="farms-tab" class="tab-content active">
-            <div class="results">
-                <h2>Granjas con producción de huevos</h2>
-                <p>Se encontraron <span id="results-count">0</span> granjas que cumplen con tus criterios:</p>
-                
-                <div id="farm-list" class="farm-list">
-                    <!-- Aquí se cargarán dinámicamente las granjas -->
-                    <div class="loading">Cargando datos de granjas...</div>
-                </div>
+            <div class="tab active" data-tab="farms">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                Granjas
             </div>
-        </div>
-        
-        <div id="dashboard-tab" class="tab-content">
-            <div class="dashboard">
-                <div class="chart-container">
-                    <h3>Producción por Región</h3>
-                    <canvas id="region-chart"></canvas>
-                </div>
-                <div class="chart-container">
-                    <h3>Tasa de Mortalidad por Región</h3>
-                    <canvas id="mortality-chart"></canvas>
-                </div>
-                <div class="chart-container">
-                    <h3>Peso Promedio</h3>
-                    <canvas id="weight-chart"></canvas>
-                </div>
-                <div class="chart-container">
-                    <h3>Producción Mensual</h3>
-                    <canvas id="monthly-chart"></canvas>
-                </div>
+            <div class="tab" data-tab="analysis">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+                    <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+                </svg>
+                Análisis
             </div>
-        </div>
-        
-        <div id="map-tab" class="tab-content">
-            <div class="results">
-                <h2>Mapa de Granjas por Región</h2>
-                <div id="map-container" style="height: 500px; width: 100%; background-color: #f0f0f0; border-radius: 8px; display: flex; justify-content: center; align-items: center;">
-                    <p>Visualización del mapa de Colombia con ubicación de granjas</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-    
-    <script>
-        // Datos del CSV (normalmente se cargarían mediante fetch)
-        const csvData = `Granja_ID;Regiуn;Tipo_Producciуn;Pollos_Totales;Peso_Promedio_kg;Tasa_Mortalidad_%;Consumo_Alimento_kg;Fecha_Producciуn
-G001;Amazonнa;Postura;16795;2,12;11,76;10114;2024-06-10
-G002;Pacнfica;Postura;1860;2,73;2,52;16323;2025-02-07
-G003;Orinoquнa;Postura;6390;2,47;0,7;37121;2024-12-31
-G004;Orinoquнa;Engorde;12964;2,67;9,28;13975;2024-12-01
-G005;Orinoquнa;Postura;12284;2,46;9,78;14023;2024-05-22
-G006;Orinoquнa;Engorde;7265;2,38;4,48;24447;2024-05-10
-G007;Orinoquнa;Engorde;17850;3,22;5,84;27933;2025-04-01
-G008;Amazonнa;Engorde;5426;3,03;7,97;26959;2024-04-22
-G009;Orinoquнa;Engorde;15423;1,25;1,05;3667;2024-07-02
-G010;Orinoquнa;Postura;12363;3,24;11,42;56620;2024-06-29
-G011;Caribe;Postura;17023;3,58;10,7;32703;2024-11-12
-G012;Andina;Postura;9322;3,12;3,5;12337;2024-08-15
-G013;Amazonнa;Postura;2685;2,39;0,68;49427;2024-11-30
-G014;Pacнfica;Postura;1769;2,16;11,23;58971;2024-10-11
-G015;Amazonнa;Engorde;3433;2,86;6,26;39487;2025-04-03
-G016;Andina;Engorde;6311;2,19;6,7;22129;2024-04-27
-G017;Caribe;Engorde;6051;2,68;8,37;43251;2024-05-14
-G018;Caribe;Engorde;7420;2,49;7,58;34921;2024-06-11
-G019;Caribe;Postura;18568;3,11;11,35;36307;2024-07-09
-G020;Pacнfica;Postura;7396;2,31;11,36;30355;2025-02-16
-G021;Andina;Engorde;9666;2,28;10,47;40732;2025-02-04
-G022;Andina;Postura;19942;2,69;7,82;7835;2025-02-17
-G023;Amazonнa;Postura;19431;3,47;9,71;23159;2024-06-11
-G024;Amazonнa;Engorde;3747;2,54;8,29;41810;2024-07-26
-G025;Andina;Engorde;1189;2,29;7,09;50605;2024-12-03
-G026;Caribe;Engorde;4005;2,93;1,98;59254;2024-10-13
-G027;Pacнfica;Engorde;2899;2,86;9,83;43080;2024-07-01
-G028;Andina;Postura;2267;2,02;9,94;41088;2024-08-03
-G029;Orinoquнa;Postura;18912;2,23;7,7;16216;2024-09-17
-G030;Amazonнa;Engorde;12394;3,05;9,93;58284;2025-01-12
-G031;Orinoquнa;Postura;4556;2,71;7,99;38547;2024-06-06
-G032;Pacнfica;Engorde;4890;1,27;2,88;34471;2024-05-01
-G033;Amazonнa;Postura;9838;2,74;3,65;20308;2024-10-18
-G034;Pacнfica;Engorde;15502;2,96;2,97;30532;2024-04-30
-G035;Amazonнa;Engorde;11627;2,08;4,84;37349;2024-12-18
-G036;Caribe;Postura;9792;2,84;0,95;59866;2025-03-11
-G037;Caribe;Postura;11555;3,44;7,61;55476;2024-12-05
-G038;Caribe;Postura;11253;2,7;4,37;48445;2025-01-04
-G039;Andina;Engorde;9433;2,19;8,04;8713;2025-02-24
-G040;Andina;Postura;11233;2,24;4,93;59178;2024-12-27
-G041;Andina;Postura;12016;2,51;8,34;52407;2024-06-25
-G042;Orinoquнa;Engorde;3612;2,69;4,42;7804;2025-02-14
-G043;Andina;Engorde;16787;2,53;3,5;53990;2024-07-05
-G044;Orinoquнa;Engorde;18159;2,75;6,2;13136;2024-12-14
-G045;Amazonнa;Postura;13206;2,43;8,47;3009;2024-10-17
-G046;Orinoquнa;Engorde;9226;2,59;4,51;22255;2024-08-10
-G047;Andina;Engorde;15541;2,98;11,27;26793;2024-04-13
-G048;Pacнfica;Postura;4152;1,97;0,95;59570;2024-09-13
-G049;Caribe;Engorde;2585;2,55;5,31;32548;2024-05-24
-G050;Andina;Engorde;4943;2,55;11,63;40892;2024-08-06`;
-
-        // Función para parsear el CSV con PapaParse
-        function parseCSVData(csvText) {
-            const results = Papa.parse(csvText, {
-                header: true,
-                delimiter: ';',
-                dynamicTyping: true,
-                skipEmptyLines: true,
-                transformHeader: function(header) {
-                    // Corregir los caracteres codificados incorrectamente
-                    return header
-                        .replace(/н/g, 'í')
-                        .replace(/у/g, 'ó')
-                        .replace(/Regiуn/g, 'Region')
-                        .replace(/Producciуn/g, 'Produccion')
-                        .replace(/Fecha_Producciуn/g, 'Fecha_Produccion');
-                },
-                transform: function(value, header) {
-                    // Convertir comas a puntos en números decimales
-                    if (header === 'Peso_Promedio_kg' || header === 'Tasa_Mortalidad_%') {
-                        return value.toString().replace(',', '.');
-                    }
-                    return value;
-                }
-            });
-            
-            return results.data.map(row => {
-                // Asegurar que los valores numéricos sean números
-                if (row.Peso_Promedio_kg) row.Peso_Promedio_kg = parseFloat(row.Peso_Promedio_kg);
-                if (row['Tasa_Mortalidad_%']) row['Tasa_Mortalidad_%'] = parseFloat(row['Tasa_Mortalidad_%']);
-                if (row.Consumo_Alimento_kg) row.Consumo_Alimento_kg = parseInt(row.Consumo_Alimento_kg);
-                if (row.Pollos_Totales) row.Pollos_Totales = parseInt(row.Pollos_Totales);
-                
-                // Corregir nombres de regiones
-                if (row.Region) {
-                    row.Region = row.Region
-                        .replace('Amazonнa', 'Amazonía')
-                        .replace('Orinoquнa', 'Orinoquía')
-                        .replace('Pacнfica', 'Pacífica');
-                }
-                
-                return row;
-            });
-        }
-
-        // Calcular la calificación de calidad de cada granja
-        function calculateQualityScore(farm) {
-            // Factores para huevos (granjas de postura)
-            if (farm.Produccion === 'Postura') {
-                // Para huevos, queremos baja mortalidad, buen peso promedio y consumo eficiente de alimento
-                const mortalityScore = 10 - Math.min(farm['Tasa_Mortalidad_%'], 10); // 0-10
-                const weightScore = Math.min(farm.Peso_Promedio_kg * 3, 10); // 0-10
-                
-                // Calculamos la eficiencia de consumo (alimento por pollo)
-                const foodEfficiency = farm.Consumo_Alimento_kg / farm.Pollos_Totales;
-                // Puntuación inversa: menos consumo es mejor (dentro de un rango razonable)
-                const foodScore = Math.max(10 - (foodEfficiency / 3), 1);
-                
-                // Combinar puntuaciones (damos más peso a mortalidad y peso)
-                const totalScore = (mortalityScore * 0.4) + (weightScore * 0.4) + (foodScore * 0.2);
-                
-                // Devolver la calidad en categorías
-                if (totalScore >= 7) return 'high';
-                if (totalScore >= 5) return 'medium';
-                return 'low';
-            } else {
-                // Para granjas de engorde
-                return 'medium'; // Por defecto
-            }
-        }
-
-        // Cargar los datos y mostrar granjas
-        document.addEventListener('DOMContentLoaded', function() {
-            const farms = parseCSVData(csvData);
-            
-            // Inicializar la visualización
-            renderFarms(farms);
-            initCharts(farms);
-            initTabs();
-            
-            // Configurar evento del botón de filtro
-            document.getElementById('filter-btn').addEventListener('click', function() {
-                filterFarms(farms);
-            });
-        });
-
-        // Renderizar la lista de granjas
-        function renderFarms(farms) {
-            const farmListElement = document.getElementById('farm-list');
-            const postureFarms = farms.filter(farm => farm.Produccion === 'Postura');
-            
-            if (postureFarms.length === 0) {
-                farmListElement.innerHTML = '<div class="no-results">No se encontraron granjas de postura.</div>';
-                document.getElementById('results-count').textContent = '0';
-                return;
-            }
-            
-            document.getElementById('results-count').textContent = postureFarms.length;
-            
-            let html = '';
-            postureFarms.forEach(farm => {
-                const qualityScore = calculateQualityScore(farm);
-                let qualityClass = '';
-                let qualityText = '';
-                
-                if (qualityScore === 'high') {
-                    qualityClass = 'quality-high';
-                    qualityText = 'Alta';
-                } else if (qualityScore === 'medium') {
-                    qualityClass = 'quality-medium';
-                    qualityText = 'Media';
-                } else {
-                    qualityClass = 'quality-low';
-                    qualityText = 'Baja';
-                }
-                
-                html += `
-                <div class="farm-card" data-quality="${qualityScore}" data-region="${farm.Region}">
-                    <h3>${farm.Granja_ID} <span class="quality-indicator ${qualityClass}">${qualityText}</span></h3>
-                    <p>Región: ${farm.Region}</p>
-                    <p>Fecha de producción: ${farm.Fecha_Produccion}</p>
-                    
-                    <div class="farm-stats">
-                        <div class="stat">
-                            <strong>${farm.Pollos_Totales}</strong>
-                            <span>Aves</span>
-                        </div>
-                        <div class="stat">
-                            <strong>${farm.Peso_Promedio_kg} kg</strong>
-                            <span>Peso promedio</span>
-                        </div>
-                        <div class="stat">
-                            <strong>${farm['Tasa_Mortalidad_%']}%</strong>
-                            <span>Mortalidad</span>
-                        </div>
-                    </div>
-                </div>`;
-            });
-            
-            farmListElement.innerHTML = html;
-        }
-
-        // Filtrar granjas según criterios
-        function filterFarms(farms) {
-            const regionFilter = document.getElementById('region').value;
-            const typeFilter = document.getElementById('production-type').value;
-            const qualityFilter = document.getElementById('quality').value;
-            
-            let filteredFarms = farms;
-            
-            // Aplicar filtros
-            if (regionFilter) {
-                filteredFarms = filteredFarms.filter(farm => farm.Region === regionFilter);
-            }
-            
-            if (typeFilter) {
-                filteredFarms = filteredFarms.filter(farm => farm.Produccion === typeFilter);
-            }
-            
-            // Renderizar resultados
-            renderFarms(filteredFarms);
-            
-            // Si hay filtro de calidad, filtramos después de renderizar
-            if (qualityFilter) {
-                const farmCards = document.querySelectorAll('.farm-card');
-                farmCards.forEach(card => {
-                    if (card.dataset.quality !== qualityFilter) {
-                        card.style.display = 'none';
-                    }
-                });
-                
-                // Actualizar contador
-                const visibleCards = document.querySelectorAll('.farm-card[style="display: none;"]');
-                document.getElementById('results-count').textContent = farmCards.length - visibleCards.length;
-            }
-        }
-
-        // Inicializar gráficos
-        function initCharts(farms) {
-            // Ejemplo básico para un gráfico
-            const postureFarms = farms.filter(farm => farm.Produccion === 'Postura');
-            
-            // Agrupar por región
-            const regionData = {};
-            postureFarms.forEach(farm => {
-                if (!regionData[farm.Region]) {
-                    regionData[farm.Region] = {
-                        count: 0,
-                        totalChickens: 0,
-                        mortality: 0
-                    };
-                }
-                regionData[farm.Region].count++;
-                regionData[farm.Region].totalChickens += farm.Pollos_Totales;
-                regionData[farm.Region].mortality += farm['Tasa_Mortalidad_%'];
-            });
-            
-            // Preparar datos para gráficos
-            const regions = Object.keys(regionData);
-            const chickensData = regions.map(region => regionData[region].totalChickens);
-            const mortalityData = regions.map(region => regionData[region].mortality / regionData[region].count);
-            
-            // Gráfico por región
-            const regionCtx = document.getElementById('region-chart').getContext('2d');
-            new Chart(regionCtx, {
-                type: 'bar',
-                data: {
-                    labels: regions,
-                    datasets: [{
-                        label: 'Total de Aves de Postura',
-                        data: chickensData,
-                        backgroundColor: 'rgba(106, 153, 78, 0.7)',
-                        borderColor: 'rgba(56, 102, 65, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-            
-            // Gráfico de mortalidad
-            const mortalityCtx = document.getElementById('mortality-chart').getContext('2d');
-            new Chart(mortalityCtx, {
-                type: 'bar',
-                data: {
-                    labels: regions,
-                    datasets: [{
-                        label: 'Tasa de Mortalidad Promedio (%)',
-                        data: mortalityData,
-                        backgroundColor: 'rgba(188, 71, 73, 0.7)',
-                        borderColor: 'rgba(188, 71, 73, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 12
-                        }
-                    }
-                }
-            });
-            
-            // Gráfico de peso promedio
-            const weightData = {};
-            regions.forEach(region => {
-                weightData[region] = 0;
-                let count = 0;
-                postureFarms.filter(farm => farm.Region === region).forEach(farm => {
-                    weightData[region] += farm.Peso_Promedio_kg;
-                    count++;
-                });
-                if (count > 0) weightData[region] /= count;
-            });
-            
-            const weightCtx = document.getElementById('weight-chart').getContext('2d');
-            new Chart(weightCtx, {
-                type: 'bar',
-                data: {
-                    labels: regions,
-                    datasets: [{
-                        label: 'Peso Promedio (kg)',
-                        data: regions.map(region => weightData[region]),
-                        backgroundColor: 'rgba(167, 201, 87, 0.7)',
-                        borderColor: 'rgba(167, 201, 87, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
+            <div class="tab" data-tab="map">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke
